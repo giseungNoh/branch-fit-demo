@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>BranchFit Demo — 은행 점포 통·폐합 의사결정 지원</title>
+<meta name="description" content="공식 사전영향평가 공개자료를 기반으로 점포 통·폐합 검토를 지원하는 BranchFit 데모" />
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+<aside class="sidebar" id="sidebar">
+  <div class="brand"><div class="brandmark"><i></i><i></i><i></i></div><div class="words"><strong>BranchFit</strong><small>데이터로 더 나은 점포 전략</small></div></div>
+  <nav class="nav" id="nav">
+    <button data-view="dashboard" class="active"><svg class="ico" viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5v8a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span>대시보드</span></button>
+    <button data-view="branches"><svg class="ico" viewBox="0 0 24 24"><path d="M5 21V5l7-2 7 2v16M8 8h2m4 0h2M8 12h2m4 0h2M8 16h2m4 0h2M3 21h18"/></svg><span>점포 현황</span></button>
+    <button data-view="candidate"><svg class="ico" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5M8 10h5M10.5 7.5v5"/></svg><span>후보 점포 분석</span></button>
+    <button data-view="assessment"><svg class="ico" viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"/><path d="M14 3v4h4M9 11h6M9 15h6"/></svg><span>사전영향평가</span></button>
+    <button data-view="alternatives"><svg class="ico" viewBox="0 0 24 24"><path d="M4 6h16v12H4zM8 10h8M8 14h4"/></svg><span>대체수단 시뮬레이션</span></button>
+    <button data-view="opinions"><svg class="ico" viewBox="0 0 24 24"><path d="M4 5h16v12H8l-4 4z"/><path d="M8 9h8M8 13h5"/></svg><span>고객 의견 수렴</span></button>
+    <button data-view="ai-report"><svg class="ico" viewBox="0 0 24 24"><path d="M12 3v3M5.6 5.6l2.1 2.1M3 12h3m.2 6.4 2.1-2.1M12 18v3m6.4-2.6-2.1-2.1M18 12h3m-2.6-6.4-2.1 2.1"/><circle cx="12" cy="12" r="4"/></svg><span>AI 분석 리포트</span></button>
+    <button data-view="post"><svg class="ico" viewBox="0 0 24 24"><path d="M4 19V9m5 10V5m5 14v-7m5 7V3"/></svg><span>사후영향평가</span></button>
+    <button data-view="data"><svg class="ico" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg><span>데이터 정의/관리</span></button>
+  </nav>
+  <div class="sidebar-foot"><b>데모 원칙</b><br>공식 기준과 BranchFit 자체 탐색기준을 분리합니다. 내부 데이터가 없으면 임의 추정하지 않고 <b>UNKNOWN</b>으로 표시합니다.</div>
+</aside>
+<main class="main">
+<header class="topbar">
+ <div style="display:flex;align-items:center;gap:10px"><button class="btn mobile-toggle" id="menuBtn">☰</button><h1 id="topTitle">BranchFit 의사결정 지원 데모</h1></div>
+ <div class="top-actions"><div class="search"><svg class="ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4 4"/></svg><input id="globalSearch" placeholder="점포명 또는 지역을 검색하세요" /></div><button class="btn" id="sourceBtn">근거/출처</button><button class="btn primary" id="quickAnalyze">+ 분석 대상 점포</button></div>
+</header>
+<div class="content">
+<!-- DASHBOARD -->
+<section id="dashboard" class="view active">
+ <div class="pagehead"><div><h2>점포 전략 대시보드</h2><p>서울 IBK 점포 데이터를 기반으로 후보 탐색 → 사전영향평가 → 대체수단 → 의사결정 리포트까지 연결합니다.</p></div><div class="notice">데모 데이터: 점포명·주소는 2024-12 기준 파일, 평가값은 UI 시연용 예시</div></div>
+ <div class="grid kpis">
+  <div class="card kpi"><div class="bubble">🏦</div><div><span>서울 고정점포</span><b>185</b><em>25개 자치구</em></div></div>
+  <div class="card kpi"><div class="bubble" style="background:#fff0f3;color:#e64980">⌁</div><div><span>검토 대상 점포</span><b>12</b><em style="color:#e64980">데모 후보</em></div></div>
+  <div class="card kpi"><div class="bubble" style="background:#e8fbf5;color:#099268">✓</div><div><span>평가 완료</span><b>7</b><em>58.3%</em></div></div>
+  <div class="card kpi"><div class="bubble" style="background:#fff4e6;color:#f08c00">!</div><div><span>추가확인 필요</span><b>5</b><em style="color:#f08c00">내부데이터</em></div></div>
+  <div class="card kpi"><div class="bubble" style="background:#f3f0ff;color:#6741d9">↔</div><div><span>대체수단 검토</span><b>9</b><em style="color:#6741d9">시뮬레이션</em></div></div>
+ </div>
+ <div class="grid dashgrid">
+   <div class="card"><div class="pad"><div class="card-title">점포 목록 <span class="mini">185개</span></div><input class="input" id="branchSearch" placeholder="점포명, 자치구 검색" /></div><div class="branch-list" id="dashBranchList"></div></div>
+   <div class="card pad"><div class="card-title">서울 점포 네트워크 <span class="mini">데모 지도</span></div><div class="map" id="mainMap"><div class="river"></div><span class="district-label" style="left:43%;top:37%">중구</span><span class="district-label" style="left:57%;top:62%">강남구</span><span class="district-label" style="left:25%;top:58%">영등포구</span><span class="district-label" style="left:66%;top:38%">성동구</span><span class="district-label" style="left:35%;top:70%">동작구</span><div class="maplegend"><div class="legendline"><i class="legenddot" style="background:#1167e8"></i>IBK 점포</div><div class="legendline"><i class="legenddot" style="background:#0ca678"></i>대체 점포</div><div class="legendline"><i class="legenddot" style="background:#f59f00"></i>ATM/STM</div></div><div class="radiusCtl"><button data-r="1">1km</button><button data-r="3" class="active">3km</button><button data-r="5">5km</button><button data-r="10">10km</button></div></div></div>
+   <div class="card pad"><div class="card-title"><span id="selectedTitle">선택 점포 사전영향평가</span><span class="badge b-red">평가 진행중</span></div><div class="assess-list" id="miniAssessment"></div><button class="btn primary" style="width:100%;justify-content:center;margin-top:12px" data-goto="assessment">사전영향평가 상세보기</button></div>
+ </div>
+ <div class="grid bottomgrid">
+   <div class="card pad"><div class="card-title">AI 분석 요약 <span class="badge b-blue">설명 전용</span></div><div class="ai-box" id="dashAi">점포를 선택하면 확보된 데이터만 바탕으로 금융접근성 영향과 추가 확인사항을 설명합니다. AI는 거리 계산·점수 생성·최종 폐점 결정을 하지 않습니다.</div><button class="btn" style="margin-top:10px" id="dashAiBtn">AI 요약 생성</button></div>
+   <div class="card pad"><div class="card-title">영향도 검토 결과 <span class="mini">예시</span></div><div style="display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:center"><div style="text-align:center"><div style="font-size:28px;font-weight:900;color:#e68a00">중간</div><div class="mini">금융접근성 영향</div></div><div><div class="meter"><i></i></div><ul style="font-size:12px;line-height:1.7;padding-left:18px"><li>최근접 자사점포 거리: <b id="dashDistance">3.2km</b></li><li>대면서비스 의존도: 내부데이터 필요</li><li>반경 3km 내 대체채널: 4개(데모)</li></ul></div></div></div>
+   <div class="card pad"><div class="card-title">권고 대체수단 <button class="btn" data-goto="alternatives">시뮬레이션</button></div><div class="recommend"><div class="rec"><span class="badge b-blue">1순위</span><strong>소규모점포</strong><span>창구 축소 운영</span></div><div class="rec"><span class="badge b-green">2순위</span><strong>이동점포</strong><span>주 2회 운영</span></div><div class="rec"><span class="badge b-amber">보완</span><strong>ATM 설치</strong><span>반경 1km</span></div></div></div>
+ </div>
+</section>
+<!-- BRANCHES -->
+<section id="branches" class="view">
+ <div class="pagehead"><div><h2>점포 운영현황</h2><p>IBK 서울 185개 고정점포를 자치구·점포유형별로 탐색합니다.</p></div><div class="notice">실제 점포명·주소 사용 / 평가 상태는 데모</div></div>
+ <div class="card pad"><div class="filters"><input id="tableSearch" placeholder="점포 검색" /><select id="districtFilter"><option value="">전체 자치구</option></select><select id="typeFilter"><option value="">전체 유형</option></select><button class="btn" id="clearFilter">필터 초기화</button></div><div class="tablewrap" style="max-height:650px"><table><thead><tr><th>점포명</th><th>자치구</th><th>점포유형</th><th>주소</th><th>전화번호</th><th>데모 상태</th><th></th></tr></thead><tbody id="branchTable"></tbody></table></div></div>
+</section>
+<!-- CANDIDATE -->
+<section id="candidate" class="view">
+ <div class="pagehead"><div><h2>통·폐합 후보 점포 탐색</h2><p>공식 사전영향평가와 분리된 <b>BranchFit 내부 후보 탐색 모듈</b>입니다. 실제 은행 내부 후보선정 기준은 은행별 내규 확인이 필요합니다.</p></div><div class="notice">공식 평가기준 아님 — 데모용 시나리오</div></div>
+ <div class="grid split"><div class="card pad"><div class="card-title">후보 탐색 기준 조정</div><div class="field"><label>점포 중복도 가중치 <b id="wOverlap">40</b>%</label><input type="range" id="rangeOverlap" min="0" max="100" value="40"></div><div class="field" style="margin-top:15px"><label>운영효율 가중치 <b id="wEff">35</b>%</label><input type="range" id="rangeEff" min="0" max="100" value="35"></div><div class="field" style="margin-top:15px"><label>디지털 전환 가능성 <b id="wDigital">25</b>%</label><input type="range" id="rangeDigital" min="0" max="100" value="25"></div><div class="callout" style="margin-top:18px">후보 탐색은 “누굴 폐점할지” 결정하는 기능이 아니라 <b>사전영향평가를 먼저 검토할 점포를 좁히는 기능</b>으로 사용합니다.</div></div><div class="card pad"><div class="card-title">후보점포 분포 <span class="mini">상위 10개 데모</span></div><div class="chart" id="candidateChart"></div></div></div>
+ <div class="card pad" style="margin-top:16px"><div class="card-title">후보 점포 랭킹 <span class="mini">점수는 데모용, 공식 아님</span></div><div class="tablewrap"><table><thead><tr><th>순위</th><th>점포</th><th>자치구</th><th>중복도</th><th>운영효율</th><th>디지털</th><th>후보지수</th><th>다음 단계</th></tr></thead><tbody id="candidateRows"></tbody></table></div></div>
+</section>
+<!-- ASSESSMENT -->
+<section id="assessment" class="view">
+ <div class="pagehead"><div><h2>사전영향평가 워크스페이스</h2><p>공개자료에서 확인된 요소를 중심으로 <b>현황분석 → 영향진단 → 대체수단 결정</b> 순서로 검토합니다.</p></div><div class="notice">2026: 4개→8개 세부항목 확대 발표 / 정확한 8개 공식 명칭은 원문 확인 필요</div></div>
+ <div class="workflow" id="workflow"></div>
+ <div class="grid split"><div class="card pad"><div class="card-title">평가 대상 <span class="badge b-red">진행중</span></div><select class="input" id="assessmentBranch"></select><div id="branchFacts" style="margin-top:14px;font-size:13px;line-height:1.7"></div><div class="callout" style="margin-top:14px"><b>객관적 High-impact 예시 Rule</b><br>인근 점포 거리 &gt; 10km AND 대면서비스 의존도 &gt; 전체점포 평균 → 높은 영향으로 보는 객관적 요건 중 하나.</div></div><div class="card pad"><div class="card-title">데이터 완성도</div><div style="font-size:38px;font-weight:900"><span id="completionPct">50</span>%</div><div class="meter"><i id="completionBar" style="width:50%;background:linear-gradient(90deg,#1167e8,#4da3ff)"></i></div><div id="completionText" class="mini" style="margin-top:8px">4/8 확인 완료</div><button class="btn primary" style="margin-top:14px" id="runRule">공식 Rule 재평가</button></div></div>
+ <div class="card pad" style="margin-top:16px"><div class="card-title">평가요소별 상태 <span class="mini">셀을 클릭해 데모 상태 변경 가능</span></div><div class="tablewrap"><table><thead><tr><th>#</th><th>단계</th><th>평가요소</th><th>필수데이터</th><th>현재 값</th><th>근거 상태</th><th>처리</th></tr></thead><tbody id="assessmentRows"></tbody></table></div></div>
+</section>
+<!-- ALTERNATIVES -->
+<section id="alternatives" class="view">
+ <div class="pagehead"><div><h2>대체수단 시뮬레이션</h2><p>영향도와 창구 대체 가능 범위를 비교해 검토 가능한 대체수단을 보여줍니다. 최종 선택은 담당자가 합니다.</p></div><div class="notice">영향도별 대체수단 차등화는 최신 정책 방향을 반영한 데모</div></div>
+ <div class="grid split"><div class="card pad"><div class="card-title">시나리오 설정</div><div class="field"><label>금융접근성 영향도</label><div class="radio-row" id="impactRadios"><button data-impact="높음">높음</button><button data-impact="중간" class="active">중간</button><button data-impact="낮음">낮음</button></div></div><div class="field" style="margin-top:14px"><label>기존 점포 제공 업무 수</label><input class="input" id="serviceTotal" type="number" value="20" min="1" max="50"></div><div class="field" style="margin-top:14px"><label>반경 1km ATM 수</label><input class="input" id="atmCount" type="number" value="0" min="0" max="20"></div><button class="btn primary" style="margin-top:14px" id="simulateAlt">대체수단 다시 계산</button></div><div class="card pad"><div class="card-title">권고 우선순위</div><div id="altRecommendations"></div></div></div>
+ <div class="card pad" style="margin-top:16px"><div class="card-title">창구 대체율 비교 <span class="mini">업무 범위는 데모</span></div><div class="tablewrap"><table><thead><tr><th>대체수단</th><th>제공 가능 업무</th><th>창구 대체율</th><th>접근성</th><th>적합성</th></tr></thead><tbody id="altTable"></tbody></table></div></div>
+</section>
+<!-- OPINIONS -->
+<section id="opinions" class="view">
+ <div class="pagehead"><div><h2>점포 이용고객 의견수렴</h2><p>폐점 결정 이전의 고객·지역 의견을 수집하고, 필요 시 재평가 또는 대체수단 조정으로 연결하는 데모입니다.</p></div><div class="notice">실제 운영 시 개인정보·동의·보관정책 필요</div></div>
+ <div class="grid split"><div class="card pad"><div class="card-title">의견 등록</div><div class="formgrid"><div class="field"><label>대상 점포</label><select class="input" id="opinionBranch"></select></div><div class="field"><label>응답자 구분</label><select class="input" id="respondent"><option>점포 이용고객</option><option>지역 주민</option><option>소상공인</option><option>고령 고객</option></select></div></div><div class="field" style="margin-top:14px"><label>폐점 시 예상 불편도</label><input type="range" id="inconvenience" min="1" max="5" value="4"><div class="mini">1 낮음 — 5 매우 높음</div></div><div class="field" style="margin-top:14px"><label>가장 필요한 대체수단</label><select class="input" id="preferredAlt"><option>소규모점포</option><option>공동점포</option><option>이동점포</option><option>창구제휴</option><option>ATM/STM</option></select></div><div class="field" style="margin-top:14px"><label>자유 의견</label><textarea id="opinionText" placeholder="예: 고령 고객이 많아 대면 상담이 유지되어야 합니다."></textarea></div><button class="btn primary" style="margin-top:12px" id="submitOpinion">의견 저장</button></div><div class="card pad"><div class="card-title">수렴 현황</div><div class="grid kpis" style="grid-template-columns:repeat(2,1fr)"><div class="kpi card" style="box-shadow:none"><div><span>의견 수</span><b id="opCount">24</b></div></div><div class="kpi card" style="box-shadow:none"><div><span>평균 불편도</span><b id="opAvg">4.1</b></div></div></div><div class="chart" id="opChart" style="height:260px"></div></div></div>
+ <div class="card pad" style="margin-top:16px"><div class="card-title">최근 의견 <span class="mini">데모 세션에 저장</span></div><div id="opinionFeed"></div></div>
+</section>
+<!-- AI REPORT -->
+<section id="ai-report" class="view">
+ <div class="pagehead no-print"><div><h2>AI 분석 & 의사결정자 리포트</h2><p>Rule Engine·공간분석·데이터 상태를 설명 가능한 형태로 요약합니다. AI가 미확보 값을 만들어내지 않습니다.</p></div><div><button class="btn" id="regenReport">리포트 재생성</button> <button class="btn primary" onclick="window.print()">PDF로 인쇄</button></div></div>
+ <article class="report" id="reportDoc"></article>
+</section>
+<!-- POST -->
+<section id="post" class="view">
+ <div class="pagehead"><div><h2>사후영향평가</h2><p>폐점·통합 이후 실제 이용현황과 소비자 불편을 점검하고 대체수단 보완으로 연결합니다.</p></div><div class="notice">Future/P1 기능 — 데모 시뮬레이션</div></div>
+ <div class="grid kpis" style="grid-template-columns:repeat(4,1fr)"><div class="card kpi"><div><span>대체점포 이용전환</span><b>72%</b><em>+8%p</em></div></div><div class="card kpi"><div><span>민원 발생</span><b>18</b><em style="color:#e64980">재검토 필요</em></div></div><div class="card kpi"><div><span>대체수단 가동률</span><b>86%</b><em>안정</em></div></div><div class="card kpi"><div><span>추가 보완 권고</span><b>2</b><em style="color:#f08c00">ATM·이동점포</em></div></div></div>
+ <div class="grid split"><div class="card pad"><div class="card-title">폐점 후 12주 이용 변화</div><div class="chart" id="postChart" style="height:330px"></div></div><div class="card pad"><div class="card-title">보완 액션</div><div class="assess-list"><div class="assess-row"><div class="num">1</div><div><b>ATM 신규 설치</b><div class="mini">기존 위치 반경 1km 내 보완</div></div><span class="status warn">검토</span></div><div class="assess-row"><div class="num">2</div><div><b>이동점포 운영일 확대</b><div class="mini">주 2회 → 주 3회 시뮬레이션</div></div><span class="status ok">권고</span></div><div class="assess-row"><div class="num">3</div><div><b>고령 고객 디지털 교육</b><div class="mini">대체채널 전환 지원</div></div><span class="status unknown">추가확인</span></div></div></div></div>
+</section>
+<!-- DATA -->
+<section id="data" class="view">
+ <div class="pagehead"><div><h2>평가기준별 필수 데이터 정의서</h2><p>개발팀이 직접 수정할 수 있는 데이터 매트릭스입니다. 노란색 포커스 셀은 바로 편집 가능합니다.</p></div><div><button class="btn" id="exportData">JSON 내보내기</button></div></div>
+ <div class="card pad"><div class="card-title">Data Availability Matrix <span class="mini">편집 가능</span></div><div class="tablewrap"><table class="editable"><thead><tr><th>평가요소</th><th>필수 원천데이터</th><th>산출값/계산</th><th>데이터 출처</th><th>근거상태</th><th>MVP</th><th>메모</th></tr></thead><tbody id="dataMatrix"></tbody></table></div><div class="callout" style="margin-top:16px"><b>원칙:</b> 내부데이터 미연동 시 임의 추정하지 않음. 지역 고령인구 같은 외부통계는 점포 이용고객 연령정보의 대체값으로 사용하지 않음. 새로운 공식 원문 확보 시 근거상태를 갱신.</div></div>
+</section>
+</div></main></div><div class="toast" id="toast"></div>
+<script src="app.js"></script>
+</body></html>
