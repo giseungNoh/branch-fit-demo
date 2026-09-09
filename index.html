@@ -7,7 +7,7 @@
 <meta name="description" content="자치구 현황분석부터 후보점포, 사전영향평가, 고객의견, 사후영향평가까지 연결하는 BranchFit 데모" />
 <link rel="stylesheet" href="style.css" />
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
-<link rel="stylesheet" href="enhancements.css" />
+<link rel="stylesheet" href="enhancements.css?v=20260909-2" />
 </head>
 <body>
 <div class="app">
@@ -33,7 +33,14 @@
 <div class="content">
 
 <section class="view active" id="dashboard">
-  <div class="pagehead"><div><h1>BranchFit</h1><p>은행 점포 통·폐합 검토에 필요한 현황분석·사전영향평가·고객의견·대체수단 검토를 하나의 흐름으로 연결합니다.</p></div><span class="tag blue">Decision Support</span></div>
+  <div class="pagehead"><div><h1>BranchFit</h1><p>은행 점포 통·폐합 검토 현황을 지도와 분석 Case 중심으로 한눈에 확인합니다.</p></div><span class="tag blue">Decision Support</span></div>
+  <div class="freshness-strip">
+    <b>데이터 기준일</b>
+    <span>점포정보 <strong>2025-12-31</strong></span>
+    <span>인구·고령층 <strong>2026-07-31 · 데모</strong></span>
+    <span>내부 이용데이터 <strong>2026-08-31 · 데모</strong></span>
+    <span>최근 동기화 <strong>2026-09-09</strong></span>
+  </div>
   <div class="hero card">
     <div><span class="eyebrow">서비스 흐름</span><h2>지역을 고르고 → 점포를 좁히고 → 영향을 평가하고 → 근거와 대안을 확인</h2><p>BranchFit은 폐쇄 여부를 자동 결정하지 않습니다. 담당자가 검토에 필요한 데이터를 빠르게 모으고 해석하도록 돕습니다.</p></div>
     <button class="btn primary" data-goto="status">현황분석 시작 →</button>
@@ -51,7 +58,6 @@
     <div class="card kpi"><span>검토 후보</span><strong>6</strong><small>데모 시나리오</small></div>
     <div class="card kpi"><span>사후 모니터링</span><strong>1</strong><small>조치 여부 확인 중</small></div>
   </div>
-
   <div class="dashboard-control">
     <div class="card pad map-card">
       <div class="map-head"><div><div class="card-title">서울 점포 분석 MAP</div><p>점포 상태를 지도에서 보고, 핀을 눌러 분석 Case로 이동합니다.</p></div><div class="map-filters"><button class="active" data-map-filter="all">전체</button><button data-map-filter="normal">일반</button><button data-map-filter="candidate">검토후보</button><button data-map-filter="assessment">사전평가</button><button data-map-filter="post">사후모니터링</button></div></div>
@@ -63,15 +69,11 @@
       <div class="card pad"><div class="card-title">주요 알림</div><div id="dashboardAlerts" class="alert-list"></div></div>
     </div>
   </div>
-
-  <div class="grid two">
-    <div class="card pad"><div class="card-title">현재 분석 프로세스</div><div id="progressList" class="progress-list"></div></div>
-    <div class="card pad"><div class="card-title">AI가 담당하는 영역</div><div class="ai-summary"><b>규정 근거 + 분석 해석 + 문서화</b><p>사전영향평가 결과를 금융위·은행연합회 근거와 연결하고, 추천 검토방향·대체수단·보고서·설문·고객의견 요약을 생성합니다.</p></div></div>
-  </div>
 </section>
 
 <section class="view" id="status">
   <div class="pagehead"><div><h1>현황분석</h1><p>먼저 자치구를 선택한 뒤, 해당 지역 내 점포의 이용현황을 비교합니다.</p></div><span class="tag">STEP 1</span></div>
+  <div class="freshness-strip compact"><b>데이터 기준일</b><span>인구·고령층 <strong>2026-07-31 · 데모</strong></span><span>점포이용 <strong>2026-08-31 · 데모</strong></span><span>점포정보 <strong>2025-12-31</strong></span></div>
   <div class="card pad district-box">
     <div><label>분석 자치구</label><select id="districtSelect"></select></div>
     <div class="district-stat"><span>지역 인구</span><b id="districtPop">-</b></div>
@@ -92,12 +94,24 @@
 
 <section class="view" id="candidates">
   <div class="pagehead"><div><h1>통·폐합 검토 후보</h1><p>현황분석 결과를 바탕으로 <b>추가 사전영향평가가 필요한 점포</b>를 우선순위로 보여줍니다.</p></div><span class="tag amber">폐쇄 결정 아님</span></div>
-  <div class="callout">이 화면은 “폐쇄 추천 순위”가 아니라 <b>사전영향평가를 먼저 진행할 후보점포의 검토 우선순위</b>입니다.</div>
+  <div class="freshness-strip compact"><b>데이터 기준일</b><span>이용현황 <strong>2026-08-31 · 데모</strong></span><span>취약계층 <strong>2026-07-31 · 데모</strong></span><span>점포정보 <strong>2025-12-31</strong></span></div>
+  <div class="callout">이 화면은 “폐쇄 추천 순위”가 아니라 <b>사전영향평가를 먼저 진행할 후보점포의 검토 우선순위</b>입니다. 후보선정 로직은 공식 사전영향평가와 분리된 <b>BranchFit 자체 탐색기준</b>입니다.</div>
+  <div class="candidate-method-grid">
+    <div class="card pad"><div class="card-title">후보 탐색에 사용하는 데이터</div><div class="candidate-factor-list">
+      <div><b>① 점포 이용량</b><span>최근 12개월 월평균 방문·창구 이용량</span><small>은행 내부 방문/번호표 집계</small></div>
+      <div><b>② 상대 이용빈도</b><span>인근점포·전행 평균 대비 이용수준</span><small>동일 은행 비교군 기준</small></div>
+      <div><b>③ 취약계층</b><span>고령층 등 대면 금융 접근이 중요한 고객 특성</span><small>공개 인구통계 + 내부 고객집계</small></div>
+      <div><b>④ 대면서비스 의존도</b><span>전체 거래 중 창구·대면 업무의 비중</span><small>은행 내부 거래 집계</small></div>
+    </div></div>
+    <div class="card pad"><div class="card-title">후보선정 근거를 어떻게 해석하나?</div><div class="evidence-note"><b>공식 기준과 분리</b><p>금융위·은행연합회 자료는 후보점포를 자동 선정하는 전국 공통 점수표를 공개하고 있지 않습니다. 따라서 후보 탐색은 은행 내부 전략 기준 또는 BranchFit 자체 휴리스틱으로 운영하고, 실제 <b>사전영향평가 단계에서 공식 절차와 소비자 영향 기준</b>을 적용합니다.</p></div><div class="evidence-sources"><span>금융위 「은행 점포폐쇄 대응방안」</span><span>은행연합회 「점포폐쇄 공동절차」</span><span>은행 내부 후보선정 기준 · 실제 도입 시 연동</span></div></div>
+  </div>
   <div class="card pad"><div class="filters"><select id="candidateDistrict"></select><select id="candidateSort"><option value="priority">검토 우선순위</option><option value="visit">방문 적은 순</option><option value="elderly">고령층 높은 순</option></select></div><div class="tablewrap"><table><thead><tr><th>우선순위</th><th>점포</th><th>월평균 방문</th><th>인근 평균 대비</th><th>고령층</th><th>대면의존도</th><th>상태</th><th></th></tr></thead><tbody id="candidateRows"></tbody></table></div></div>
+  <div class="card pad mt"><div class="card-title">상위 후보 선정 근거 <span class="tag blue">BranchFit Explanation</span></div><div id="candidateEvidence" class="candidate-evidence"></div></div>
 </section>
 
 <section class="view" id="assessment">
   <div class="pagehead"><div><h1>사전영향평가</h1><p>후보점포의 금융접근성 영향을 검토하고, AI가 근거 기반 검토방향과 대체수단을 설명합니다.</p></div><span class="tag purple">STEP 3</span></div>
+  <div class="freshness-strip compact"><b>평가 데이터 기준</b><span>점포정보 <strong>2025-12-31</strong></span><span>내부 이용데이터 <strong>2026-08-31 · 데모</strong></span><span>규정문서 <strong>2026-02-04</strong></span></div>
   <div class="card pad assessment-head"><div><label>평가 점포</label><select id="assessmentBranch"></select></div><div><span>평가 상태</span><b class="impact" id="impactLevel">-</b></div><div><span>평가 점수</span><b id="impactScore">-</b><small>데모 기준 · 실제 배점 연동 필요</small></div></div>
   <div class="grid assess-layout">
     <div class="card pad"><div class="card-title">평가 항목</div><div id="assessmentItems" class="assessment-items"></div></div>
@@ -111,6 +125,7 @@
 
 <section class="view" id="opinions">
   <div class="pagehead"><div><h1>고객 의견 수렴</h1><p>통·폐합 검토 대상 고객에게 설문을 발송하고, 응답 결과를 다시 BranchFit에서 분석합니다.</p></div><span class="tag green">Survey + AI</span></div>
+  <div class="freshness-strip compact"><b>고객의견 기준일</b><span>최근 설문응답 <strong>2026-09-09 · 데모</strong></span><span>VOC 집계 <strong>2026-09-09 · 데모</strong></span></div>
   <div class="grid two">
     <div class="card pad"><div class="card-title">1. AI 설문 템플릿 생성</div><label>대상 점포</label><select id="surveyBranch"></select><label class="mt">설문 목적</label><select id="surveyPurpose"><option>통·폐합 사전 의견수렴</option><option>대체수단 선호 조사</option><option>통·폐합 이후 불편 조사</option></select><button class="btn primary full mt" id="generateSurvey">AI 설문 생성</button><textarea id="surveyText" placeholder="AI가 점포 상황을 반영한 설문 초안을 생성합니다."></textarea><div class="actions"><button class="btn" id="copySurvey">템플릿 복사</button><button class="btn primary" id="sendSurvey">고객에게 발송</button></div></div>
     <div class="card pad"><div class="card-title">2. 발송 현황</div><div class="survey-kpis"><div><span>발송</span><b id="sentCount">1,240</b></div><div><span>응답</span><b id="responseCount">486</b></div><div><span>응답률</span><b id="responseRate">39.2%</b></div></div><div class="mini-chart" id="surveyBars"></div></div>
@@ -120,42 +135,37 @@
 
 <section class="view" id="post">
   <div class="pagehead"><div><h1>사후영향평가</h1><p>점포 통·폐합 이후 소비자 불편과 대체수단의 적정성을 다시 확인하고, 필요한 보완사항을 추적합니다.</p></div><span class="tag green">Post-impact Monitoring</span></div>
+  <div class="freshness-strip compact"><b>모니터링 기준일</b><span>운영지표 <strong>2026-09-09 · 데모</strong></span><span>민원/VOC <strong>2026-09-09 · 데모</strong></span></div>
   <div class="card pad district-box"><div><label>평가 Case</label><select id="postCaseSelect"></select></div><div class="district-stat"><span>폐점일</span><b>2026.06.30</b></div><div class="district-stat"><span>평가기간</span><b>12주</b></div><div class="district-stat"><span>현재 상태</span><b class="warnText">모니터링 필요</b></div></div>
-
   <div class="post-purpose-grid">
     <div class="card purpose-card"><div class="card-title">공식 사후평가 목적</div><div class="purpose-list"><div><b>✓</b><span><strong>소비자 불편 확인</strong><br>폐점 이후 고객의 불편·피해가 실제로 발생하거나 지속되는지 확인</span></div><div><b>✓</b><span><strong>대체수단 적정성 재평가</strong><br>기존에 마련한 대체점포·공동점포 등 대체수단이 충분한지 재확인</span></div><div><b>✓</b><span><strong>필요 시 보완</strong><br>문제가 지속되면 대체수단 추가·재지정 등 후속조치 검토</span></div></div><div class="official-note">※ 아래 세부 KPI는 공식 배점표가 아니라 위 목적을 운영상 확인하기 위한 BranchFit 모니터링 지표입니다.</div></div>
     <div class="card monitor-card"><div class="card-title">BranchFit 모니터링 지표</div><div class="monitor-grid"><div><b>민원 증감</b><small>VOC·민원 건수 및 주요 불편유형 변화</small></div><div><b>대체점포 방문량</b><small>폐점 고객 유입으로 인한 이용량·혼잡 변화</small></div><div><b>평균 대기시간</b><small>통합·대체점포 창구 대기시간 변화</small></div><div><b>대체수단 이용률</b><small>공동점포·이동점포·ATM/STM 실제 이용수준</small></div><div><b>접근거리 변화</b><small>폐점 전후 고객의 대면 금융 접근거리 변화</small></div><div><b>서비스 공백</b><small>기존 점포 업무 중 대체채널에서 제공되지 않는 업무</small></div></div></div>
   </div>
-
   <div class="kpis">
     <div class="card kpi"><span>대체점포 방문량</span><strong>+38%</strong><small>3,100 → 4,280건</small></div>
     <div class="card kpi"><span>평균 대기시간</span><strong>+7분</strong><small>8분 → 15분</small></div>
     <div class="card kpi"><span>월 민원/VOC</span><strong>34건</strong><small>기존 12건</small></div>
     <div class="card kpi"><span>공동점포 이용률</span><strong class="greenText">61%</strong><small>정상 운영 중</small></div>
   </div>
-
   <div class="post-summary">
     <div class="card pad"><div class="card-title">폐점 전·후 비교</div><div class="tablewrap compare-table"><table><thead><tr><th>지표</th><th>폐점 전</th><th>폐점 후</th><th>변화</th></tr></thead><tbody><tr><td>대체점포 월 방문량</td><td>3,100건</td><td>4,280건</td><td class="delta-up">+38%</td></tr><tr><td>평균 대기시간</td><td>8분</td><td>15분</td><td class="delta-up">+7분</td></tr><tr><td>월 민원/VOC</td><td>12건</td><td>34건</td><td class="delta-up">+183%</td></tr><tr><td>평균 접근거리</td><td>0.6km</td><td>2.8km</td><td class="delta-up">+2.2km</td></tr><tr><td>대체수단 운영상태</td><td>-</td><td>공동점포 정상</td><td class="delta-ok">운영</td></tr></tbody></table></div></div>
     <div class="card pad"><div class="card-title">서비스 공백 확인</div><div class="service-gap"><div><b>입출금·송금</b><span>공동점포</span><span class="delta-ok">대체 가능</span></div><div><b>예적금 상담</b><span>공동점포</span><span class="delta-ok">대체 가능</span></div><div><b>기업대출 상담</b><span>대체채널 없음</span><span class="delta-up">공백 확인</span></div><div><b>디지털 이용 지원</b><span>지원인력 확인</span><span class="warnText">추가 확인</span></div></div><div class="callout mt"><b>현재 사후영향 상태: 모니터링 필요</b><br>방문량·대기시간·민원이 함께 증가했고, 기업대출 상담 업무의 서비스 공백이 확인됩니다.</div></div>
   </div>
-
   <div class="grid two mt"><div class="card pad"><div class="card-title">12주 운영 추이</div><div class="bar-chart" id="postChart"></div></div><div class="card pad"><div class="card-title">사후평가 체크리스트</div><div class="checklist"><div>✓ 소비자 불편/VOC 확인 <span>확인</span></div><div>✓ 대체수단 정상 운영 여부 <span>확인</span></div><div>! 대체점포 혼잡 증가 <span class="warnText">모니터링</span></div><div>! 접근거리 증가 <span class="warnText">모니터링</span></div><div>! 서비스 공백 발생 <span class="warnText">조치 검토</span></div></div></div></div>
   <div class="card pad mt"><div class="card-title">AI 사후영향 분석 <button class="btn primary" id="postAiBtn">AI 분석</button></div><div class="ai-summary muted" id="postAiSummary">현재 운영지표와 고객 불편 데이터를 종합해 추가 검토사항을 생성합니다.</div></div>
 </section>
 
 <section class="view" id="data">
   <div class="pagehead"><div><h1>데이터 정의 및 관리</h1><p>외부·내부 데이터를 업로드하고, AI 컬럼 매핑 → ETL 검증 → PostgreSQL 적재까지 관리합니다.</p></div><span class="tag blue">Data Pipeline</span></div>
+  <div class="freshness-strip"><b>데이터 최신성</b><span>점포정보 <strong>2025-12-31</strong></span><span>인구통계 <strong>2026-07-31 · 데모</strong></span><span>방문·대면 데이터 <strong>2026-08-31 · 데모</strong></span><span>설문/VOC <strong>2026-09-09 · 데모</strong></span></div>
   <div class="pipeline"><div>CSV / Excel / JSON / API</div><b>→</b><div>AI 컬럼 매핑</div><b>→</b><div>Python ETL</div><b>→</b><div>검증</div><b>→</b><div>PostgreSQL</div></div>
   <div class="grid two">
     <div class="card pad"><div class="card-title">내부 데이터 업로드</div><div class="upload" id="uploadBox"><b>파일을 선택해 업로드</b><span>CSV · XLSX · JSON</span><input type="file" id="dataFile" accept=".csv,.xlsx,.json" /></div><div id="mappingPreview" class="mapping"></div></div>
     <div class="card pad"><div class="card-title">데이터셋 상태</div><div id="datasetList" class="dataset-list"></div></div>
   </div>
-
-  <div class="card pad mt"><div class="card-title">분석 결과 저장 구조</div><div class="storage-architecture"><div class="storage-box"><b>원천 데이터</b><small>branch<br>population_stats<br>branch_visit_stats<br>customer_opinion</small></div><div class="storage-arrow">→</div><div class="storage-box"><b>analysis_case</b><small>점포 하나의 통·폐합 검토 건을 하나의 Case로 관리<br>case_id · branch_id · current_stage · status</small></div><div class="storage-arrow">→</div><div class="storage-box"><b>단계별 분석 이력</b><small>status_analysis · candidate_analysis · impact_assessment · ai_analysis · survey · post_assessment</small></div></div><div class="official-note">각 분석 시점의 데이터 버전·규정 버전·AI 결과까지 함께 저장해 과거 의사결정 근거를 다시 확인할 수 있도록 설계합니다.</div></div>
-
+  <div class="card pad mt"><div class="card-title">분석 결과 저장 구조</div><div class="storage-architecture"><div class="storage-box"><b>원천 데이터</b><small>branch<br>population_stats<br>branch_visit_stats<br>customer_opinion</small></div><div class="storage-arrow">→</div><div class="storage-box"><b>analysis_case</b><small>점포 하나의 통·폐합 검토 건을 하나의 Case로 관리<br>case_id · branch_id · current_stage · status</small></div><div class="storage-arrow">→</div><div class="storage-box"><b>단계별 분석 이력</b><small>status_analysis · candidate_analysis · impact_assessment · ai_analysis · survey · post_assessment</small></div></div><div class="official-note">각 분석 시점의 데이터 기준일·데이터 버전·규정 버전·AI 결과를 함께 저장해 과거 의사결정 근거를 재현할 수 있도록 설계합니다.</div></div>
   <div class="card pad mt"><div class="card-title">최근 저장된 분석 Case</div><div class="tablewrap history-table"><table><thead><tr><th>Case</th><th>현재 단계</th><th>영향도</th><th>상태</th><th>업데이트</th></tr></thead><tbody id="caseHistoryRows"></tbody></table></div></div>
-
-  <div class="card pad mt"><div class="card-title">BranchFit 표준 스키마</div><div class="schema-grid"><div><b>branch</b><code>branch_id · bank_code · branch_name · latitude · longitude · area_code</code></div><div><b>population_stats</b><code>area_code · total_population · age_65_plus · elderly_ratio</code></div><div><b>branch_visit_stats</b><code>branch_id · year_month · visit_count · unique_customer_count</code></div><div><b>customer_opinion</b><code>survey_id · branch_id · inconvenience_level · preferred_alternative · comment</code></div><div><b>analysis_case</b><code>case_id · branch_id · current_stage · status · created_at · updated_at</code></div><div><b>post_assessment</b><code>case_id · complaints · alternative_visits · waiting_time · access_distance · service_gap</code></div></div></div>
+  <div class="card pad mt"><div class="card-title">BranchFit 표준 스키마</div><div class="schema-grid"><div><b>branch</b><code>branch_id · bank_code · branch_name · latitude · longitude · area_code</code></div><div><b>population_stats</b><code>area_code · total_population · age_65_plus · elderly_ratio · reference_date</code></div><div><b>branch_visit_stats</b><code>branch_id · year_month · visit_count · unique_customer_count</code></div><div><b>customer_opinion</b><code>survey_id · branch_id · inconvenience_level · preferred_alternative · comment</code></div><div><b>analysis_case</b><code>case_id · branch_id · current_stage · status · data_snapshot_at · created_at · updated_at</code></div><div><b>post_assessment</b><code>case_id · complaints · alternative_visits · waiting_time · access_distance · service_gap</code></div></div></div>
 </section>
 
 </div>
@@ -163,7 +173,7 @@
 </div>
 <div class="toast" id="toast"></div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-<script src="app.js"></script>
-<script src="enhancements.js"></script>
+<script src="app.js?v=20260909-2"></script>
+<script src="enhancements.js?v=20260909-2"></script>
 </body>
 </html>
