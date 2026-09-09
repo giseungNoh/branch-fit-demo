@@ -4,10 +4,11 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>BranchFit — 은행 점포 통·폐합 의사결정 지원</title>
-<meta name="description" content="자치구 현황분석부터 후보점포, 사전영향평가, 고객의견, 사후영향평가까지 연결하는 BranchFit 데모" />
+<meta name="description" content="은행 점포 통·폐합 검토 업무를 지원하는 BranchFit 백오피스 데모" />
 <link rel="stylesheet" href="style.css" />
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
-<link rel="stylesheet" href="enhancements.css?v=20260909-2" />
+<link rel="stylesheet" href="enhancements.css?v=20260909-4" />
+<link rel="stylesheet" href="backoffice.css?v=20260909-4" />
 </head>
 <body>
 <div class="app">
@@ -22,7 +23,6 @@
     <button data-view="post"><span>06</span> 사후영향평가</button>
     <button data-view="data"><span>07</span> 데이터 관리</button>
   </nav>
-  <div class="side-note"><b>BranchFit 원칙</b><br>계산과 근거 정리는 시스템이 지원하고, 최종 통·폐합 결정은 은행 담당자가 수행합니다.</div>
 </aside>
 
 <main class="main">
@@ -33,47 +33,30 @@
 <div class="content">
 
 <section class="view active" id="dashboard">
-  <div class="pagehead"><div><h1>BranchFit</h1><p>은행 점포 통·폐합 검토 현황을 지도와 분석 Case 중심으로 한눈에 확인합니다.</p></div><span class="tag blue">Decision Support</span></div>
-  <div class="freshness-strip">
-    <b>데이터 기준일</b>
-    <span>점포정보 <strong>2025-12-31</strong></span>
-    <span>인구·고령층 <strong>2026-07-31 · 데모</strong></span>
-    <span>내부 이용데이터 <strong>2026-08-31 · 데모</strong></span>
-    <span>최근 동기화 <strong>2026-09-09</strong></span>
-  </div>
-  <div class="hero card">
-    <div><span class="eyebrow">서비스 흐름</span><h2>지역을 고르고 → 점포를 좁히고 → 영향을 평가하고 → 근거와 대안을 확인</h2><p>BranchFit은 폐쇄 여부를 자동 결정하지 않습니다. 담당자가 검토에 필요한 데이터를 빠르게 모으고 해석하도록 돕습니다.</p></div>
-    <button class="btn primary" data-goto="status">현황분석 시작 →</button>
-  </div>
-  <div class="flow">
-    <button data-goto="status"><b>1</b><span>자치구 선택·현황분석<small>이용현황·취약계층·빈도·대면의존도</small></span></button>
-    <button data-goto="candidates"><b>2</b><span>후보점포 우선순위<small>추가 검토가 필요한 점포 탐색</small></span></button>
-    <button data-goto="assessment"><b>3</b><span>사전영향평가<small>접근성 영향·대체수단 검토</small></span></button>
-    <button data-goto="opinions"><b>4</b><span>고객 의견 수렴<small>AI 설문 생성·응답 분석</small></span></button>
-    <button data-goto="post"><b>5</b><span>사후영향평가<small>통·폐합 이후 운영 변화 확인</small></span></button>
-  </div>
+  <div class="pagehead"><div><h1>대시보드</h1><p>점포 통·폐합 검토 현황과 진행 중인 분석 Case를 확인합니다.</p></div></div>
+  <div class="freshness-strip"><b>데이터 기준일</b><span>점포/좌표 <strong>2026-09-08</strong></span><span>인구·65세 이상 <strong>2026-07-31</strong></span><span>점포 방문·이용빈도 <strong>2026-08 · 데모</strong></span><span>대면서비스 의존도 <strong>2026-08 · 데모</strong></span></div>
   <div class="kpis">
     <div class="card kpi"><span>분석 대상 자치구</span><strong>25</strong><small>서울 전체</small></div>
     <div class="card kpi"><span>IBK 데모 점포</span><strong>30</strong><small>대표 샘플</small></div>
-    <div class="card kpi"><span>검토 후보</span><strong>6</strong><small>데모 시나리오</small></div>
+    <div class="card kpi"><span>검토 후보</span><strong>6</strong><small>후보점포 분석</small></div>
     <div class="card kpi"><span>사후 모니터링</span><strong>1</strong><small>조치 여부 확인 중</small></div>
   </div>
   <div class="dashboard-control">
     <div class="card pad map-card">
-      <div class="map-head"><div><div class="card-title">서울 점포 분석 MAP</div><p>점포 상태를 지도에서 보고, 핀을 눌러 분석 Case로 이동합니다.</p></div><div class="map-filters"><button class="active" data-map-filter="all">전체</button><button data-map-filter="normal">일반</button><button data-map-filter="candidate">검토후보</button><button data-map-filter="assessment">사전평가</button><button data-map-filter="post">사후모니터링</button></div></div>
+      <div class="map-head"><div><div class="card-title">서울 점포 분석 지도</div><p>점포 상태를 지도에서 확인하고 분석 Case로 이동합니다.</p></div><div class="map-filters"><button class="active" data-map-filter="all">전체</button><button data-map-filter="normal">일반</button><button data-map-filter="candidate">검토후보</button><button data-map-filter="assessment">사전평가</button><button data-map-filter="post">사후모니터링</button></div></div>
       <div id="analysisMap"></div>
       <div class="map-legend"><span><i class="legend-dot" style="background:#1769e0"></i>일반 운영</span><span><i class="legend-dot" style="background:#f59f00"></i>검토 후보</span><span><i class="legend-dot" style="background:#e85976"></i>사전영향평가</span><span><i class="legend-dot" style="background:#0ca678"></i>사후 모니터링</span></div>
     </div>
     <div class="grid">
-      <div class="card pad"><div class="card-title">최근 분석 Case <span class="tag blue">PostgreSQL 저장</span></div><div id="recentCases" class="case-list"></div></div>
+      <div class="card pad"><div class="card-title">최근 분석 Case</div><div id="recentCases" class="case-list"></div></div>
       <div class="card pad"><div class="card-title">주요 알림</div><div id="dashboardAlerts" class="alert-list"></div></div>
     </div>
   </div>
 </section>
 
 <section class="view" id="status">
-  <div class="pagehead"><div><h1>현황분석</h1><p>먼저 자치구를 선택한 뒤, 해당 지역 내 점포의 이용현황을 비교합니다.</p></div><span class="tag">STEP 1</span></div>
-  <div class="freshness-strip compact"><b>데이터 기준일</b><span>인구·고령층 <strong>2026-07-31 · 데모</strong></span><span>점포이용 <strong>2026-08-31 · 데모</strong></span><span>점포정보 <strong>2025-12-31</strong></span></div>
+  <div class="pagehead"><div><h1>현황분석</h1><p>자치구를 선택하고 지역 내 점포 이용현황을 비교합니다.</p></div><span class="tag">STEP 1</span></div>
+  <div class="freshness-strip"><b>데이터 기준일</b><span>인구·65세 이상 <strong>2026-07-31</strong></span><span>점포 방문·이용빈도 <strong>2026-08 · 데모</strong></span><span>대면서비스 의존도 <strong>2026-08 · 데모</strong></span><span>점포/좌표 <strong>2026-09-08</strong></span></div>
   <div class="card pad district-box">
     <div><label>분석 자치구</label><select id="districtSelect"></select></div>
     <div class="district-stat"><span>지역 인구</span><b id="districtPop">-</b></div>
@@ -88,30 +71,28 @@
   </div>
   <div class="grid two">
     <div class="card pad"><div class="card-title">자치구 내 점포 비교</div><div class="tablewrap"><table><thead><tr><th>점포</th><th>월평균 방문</th><th>고령고객</th><th>이용빈도</th><th>대면의존도</th></tr></thead><tbody id="statusRows"></tbody></table></div></div>
-    <div class="card pad"><div class="card-title">현황분석 해석</div><div class="insight" id="statusInsight"></div><button class="btn primary full" data-goto="candidates">후보점포 우선순위 보기 →</button></div>
+    <div class="card pad"><div class="card-title">현황분석 요약</div><div class="insight" id="statusInsight"></div><button class="btn primary full" data-goto="candidates">후보점포 우선순위 보기 →</button></div>
   </div>
 </section>
 
 <section class="view" id="candidates">
-  <div class="pagehead"><div><h1>통·폐합 검토 후보</h1><p>현황분석 결과를 바탕으로 <b>추가 사전영향평가가 필요한 점포</b>를 우선순위로 보여줍니다.</p></div><span class="tag amber">폐쇄 결정 아님</span></div>
-  <div class="freshness-strip compact"><b>데이터 기준일</b><span>이용현황 <strong>2026-08-31 · 데모</strong></span><span>취약계층 <strong>2026-07-31 · 데모</strong></span><span>점포정보 <strong>2025-12-31</strong></span></div>
-  <div class="callout">이 화면은 “폐쇄 추천 순위”가 아니라 <b>사전영향평가를 먼저 진행할 후보점포의 검토 우선순위</b>입니다. 후보선정 로직은 공식 사전영향평가와 분리된 <b>BranchFit 자체 탐색기준</b>입니다.</div>
-  <div class="candidate-method-grid">
-    <div class="card pad"><div class="card-title">후보 탐색에 사용하는 데이터</div><div class="candidate-factor-list">
-      <div><b>① 점포 이용량</b><span>최근 12개월 월평균 방문·창구 이용량</span><small>은행 내부 방문/번호표 집계</small></div>
-      <div><b>② 상대 이용빈도</b><span>인근점포·전행 평균 대비 이용수준</span><small>동일 은행 비교군 기준</small></div>
-      <div><b>③ 취약계층</b><span>고령층 등 대면 금융 접근이 중요한 고객 특성</span><small>공개 인구통계 + 내부 고객집계</small></div>
-      <div><b>④ 대면서비스 의존도</b><span>전체 거래 중 창구·대면 업무의 비중</span><small>은행 내부 거래 집계</small></div>
-    </div></div>
-    <div class="card pad"><div class="card-title">후보선정 근거를 어떻게 해석하나?</div><div class="evidence-note"><b>공식 기준과 분리</b><p>금융위·은행연합회 자료는 후보점포를 자동 선정하는 전국 공통 점수표를 공개하고 있지 않습니다. 따라서 후보 탐색은 은행 내부 전략 기준 또는 BranchFit 자체 휴리스틱으로 운영하고, 실제 <b>사전영향평가 단계에서 공식 절차와 소비자 영향 기준</b>을 적용합니다.</p></div><div class="evidence-sources"><span>금융위 「은행 점포폐쇄 대응방안」</span><span>은행연합회 「점포폐쇄 공동절차」</span><span>은행 내부 후보선정 기준 · 실제 도입 시 연동</span></div></div>
+  <div class="pagehead"><div><h1>후보점포 분석</h1><p>현황분석의 핵심 평가항목을 기준으로 추가 사전영향평가가 필요한 점포를 비교합니다.</p></div><span class="tag">STEP 2</span></div>
+  <div class="freshness-strip"><b>데이터 기준일</b><span>점포 방문·이용빈도 <strong>2026-08 · 데모</strong></span><span>인구·65세 이상 <strong>2026-07-31</strong></span><span>대면서비스 의존도 <strong>2026-08 · 데모</strong></span><span>점포/좌표 <strong>2026-09-08</strong></span></div>
+  <div class="card pad criteria-card">
+    <div class="card-title">평가 항목</div>
+    <div class="tablewrap"><table class="criteria-table"><thead><tr><th>항목</th><th>확인 내용</th><th>사용 데이터</th><th>기준일</th></tr></thead><tbody>
+      <tr><td><b>고객 점포 이용현황</b></td><td>최근 12개월 월평균 방문·이용고객 규모</td><td class="criteria-source">은행 내부 방문·번호표·창구 집계</td><td class="criteria-date">2026-08 · 데모</td></tr>
+      <tr><td><b>점포 이용빈도</b></td><td>대상점포 이용량을 인근점포·전행 평균과 비교</td><td class="criteria-source">은행 내부 방문 로그</td><td class="criteria-date">2026-08 · 데모</td></tr>
+      <tr><td><b>취약계층</b></td><td>65세 이상 등 대면 금융 접근이 중요한 고객·지역 특성</td><td class="criteria-source">공개 인구통계 + 내부 고객집계</td><td class="criteria-date">2026-07-31 / 2026-08</td></tr>
+      <tr><td><b>대면서비스 의존도</b></td><td>전체 거래 중 창구·대면 서비스 이용 비중</td><td class="criteria-source">은행 내부 거래채널 집계</td><td class="criteria-date">2026-08 · 데모</td></tr>
+    </tbody></table></div>
   </div>
   <div class="card pad"><div class="filters"><select id="candidateDistrict"></select><select id="candidateSort"><option value="priority">검토 우선순위</option><option value="visit">방문 적은 순</option><option value="elderly">고령층 높은 순</option></select></div><div class="tablewrap"><table><thead><tr><th>우선순위</th><th>점포</th><th>월평균 방문</th><th>인근 평균 대비</th><th>고령층</th><th>대면의존도</th><th>상태</th><th></th></tr></thead><tbody id="candidateRows"></tbody></table></div></div>
-  <div class="card pad mt"><div class="card-title">상위 후보 선정 근거 <span class="tag blue">BranchFit Explanation</span></div><div id="candidateEvidence" class="candidate-evidence"></div></div>
 </section>
 
 <section class="view" id="assessment">
-  <div class="pagehead"><div><h1>사전영향평가</h1><p>후보점포의 금융접근성 영향을 검토하고, AI가 근거 기반 검토방향과 대체수단을 설명합니다.</p></div><span class="tag purple">STEP 3</span></div>
-  <div class="freshness-strip compact"><b>평가 데이터 기준</b><span>점포정보 <strong>2025-12-31</strong></span><span>내부 이용데이터 <strong>2026-08-31 · 데모</strong></span><span>규정문서 <strong>2026-02-04</strong></span></div>
+  <div class="pagehead"><div><h1>사전영향평가</h1><p>후보점포의 금융접근성 영향을 검토하고 AI가 근거 기반 검토방향과 대체수단을 설명합니다.</p></div><span class="tag">STEP 3</span></div>
+  <div class="freshness-strip"><b>데이터 기준일</b><span>점포/좌표 <strong>2026-09-08</strong></span><span>점포 방문·이용빈도 <strong>2026-08 · 데모</strong></span><span>대면서비스 의존도 <strong>2026-08 · 데모</strong></span></div>
   <div class="card pad assessment-head"><div><label>평가 점포</label><select id="assessmentBranch"></select></div><div><span>평가 상태</span><b class="impact" id="impactLevel">-</b></div><div><span>평가 점수</span><b id="impactScore">-</b><small>데모 기준 · 실제 배점 연동 필요</small></div></div>
   <div class="grid assess-layout">
     <div class="card pad"><div class="card-title">평가 항목</div><div id="assessmentItems" class="assessment-items"></div></div>
@@ -124,46 +105,35 @@
 </section>
 
 <section class="view" id="opinions">
-  <div class="pagehead"><div><h1>고객 의견 수렴</h1><p>통·폐합 검토 대상 고객에게 설문을 발송하고, 응답 결과를 다시 BranchFit에서 분석합니다.</p></div><span class="tag green">Survey + AI</span></div>
-  <div class="freshness-strip compact"><b>고객의견 기준일</b><span>최근 설문응답 <strong>2026-09-09 · 데모</strong></span><span>VOC 집계 <strong>2026-09-09 · 데모</strong></span></div>
+  <div class="pagehead"><div><h1>고객 의견 수렴</h1><p>통·폐합 검토 대상 고객에게 설문을 발송하고 응답 결과를 분석합니다.</p></div><span class="tag">STEP 4</span></div>
+  <div class="freshness-strip"><b>데이터 기준일</b><span>고객 설문/VOC <strong>2026-09-09 · 데모</strong></span></div>
   <div class="grid two">
-    <div class="card pad"><div class="card-title">1. AI 설문 템플릿 생성</div><label>대상 점포</label><select id="surveyBranch"></select><label class="mt">설문 목적</label><select id="surveyPurpose"><option>통·폐합 사전 의견수렴</option><option>대체수단 선호 조사</option><option>통·폐합 이후 불편 조사</option></select><button class="btn primary full mt" id="generateSurvey">AI 설문 생성</button><textarea id="surveyText" placeholder="AI가 점포 상황을 반영한 설문 초안을 생성합니다."></textarea><div class="actions"><button class="btn" id="copySurvey">템플릿 복사</button><button class="btn primary" id="sendSurvey">고객에게 발송</button></div></div>
-    <div class="card pad"><div class="card-title">2. 발송 현황</div><div class="survey-kpis"><div><span>발송</span><b id="sentCount">1,240</b></div><div><span>응답</span><b id="responseCount">486</b></div><div><span>응답률</span><b id="responseRate">39.2%</b></div></div><div class="mini-chart" id="surveyBars"></div></div>
+    <div class="card pad"><div class="card-title">AI 설문 템플릿 생성</div><label>대상 점포</label><select id="surveyBranch"></select><label class="mt">설문 목적</label><select id="surveyPurpose"><option>통·폐합 사전 의견수렴</option><option>대체수단 선호 조사</option><option>통·폐합 이후 불편 조사</option></select><button class="btn primary full mt" id="generateSurvey">AI 설문 생성</button><textarea id="surveyText" placeholder="AI가 점포 상황을 반영한 설문 초안을 생성합니다."></textarea><div class="actions"><button class="btn" id="copySurvey">템플릿 복사</button><button class="btn primary" id="sendSurvey">고객에게 발송</button></div></div>
+    <div class="card pad"><div class="card-title">발송 현황</div><div class="survey-kpis"><div><span>발송</span><b id="sentCount">1,240</b></div><div><span>응답</span><b id="responseCount">486</b></div><div><span>응답률</span><b id="responseRate">39.2%</b></div></div><div class="mini-chart" id="surveyBars"></div></div>
   </div>
-  <div class="card pad mt"><div class="card-title">3. 고객 응답 분석 <button class="btn primary" id="analyzeOpinions">AI 세부 분석</button></div><div class="grid two"><div><div class="tablewrap"><table><thead><tr><th>항목</th><th>결과</th></tr></thead><tbody><tr><td>폐쇄 시 불편</td><td><b>68%</b></td></tr><tr><td>가장 우려되는 요소</td><td>대체점포 이동거리</td></tr><tr><td>선호 대체수단</td><td>공동점포 36%</td></tr><tr><td>디지털 이용 어려움</td><td>31%</td></tr></tbody></table></div></div><div class="ai-summary" id="opinionSummary">AI 분석 전입니다. 정량 응답과 자유의견을 함께 분석할 수 있습니다.</div></div></div>
+  <div class="card pad mt"><div class="card-title">고객 응답 분석 <button class="btn primary" id="analyzeOpinions">AI 세부 분석</button></div><div class="grid two"><div><div class="tablewrap"><table><thead><tr><th>항목</th><th>결과</th></tr></thead><tbody><tr><td>폐쇄 시 불편</td><td><b>68%</b></td></tr><tr><td>가장 우려되는 요소</td><td>대체점포 이동거리</td></tr><tr><td>선호 대체수단</td><td>공동점포 36%</td></tr><tr><td>디지털 이용 어려움</td><td>31%</td></tr></tbody></table></div></div><div class="ai-summary" id="opinionSummary">AI 분석 전입니다. 정량 응답과 자유의견을 함께 분석할 수 있습니다.</div></div></div>
 </section>
 
 <section class="view" id="post">
-  <div class="pagehead"><div><h1>사후영향평가</h1><p>점포 통·폐합 이후 소비자 불편과 대체수단의 적정성을 다시 확인하고, 필요한 보완사항을 추적합니다.</p></div><span class="tag green">Post-impact Monitoring</span></div>
-  <div class="freshness-strip compact"><b>모니터링 기준일</b><span>운영지표 <strong>2026-09-09 · 데모</strong></span><span>민원/VOC <strong>2026-09-09 · 데모</strong></span></div>
+  <div class="pagehead"><div><h1>사후영향평가</h1><p>통·폐합 이후 핵심 운영지표를 모니터링하고 이상 징후와 서비스 공백을 확인합니다.</p></div><span class="tag">STEP 5</span></div>
+  <div class="freshness-strip"><b>데이터 기준일</b><span>점포 방문·이용빈도 <strong>2026-08 · 데모</strong></span><span>고객 설문/VOC <strong>2026-09-09 · 데모</strong></span><span>점포/좌표 <strong>2026-09-08</strong></span></div>
   <div class="card pad district-box"><div><label>평가 Case</label><select id="postCaseSelect"></select></div><div class="district-stat"><span>폐점일</span><b>2026.06.30</b></div><div class="district-stat"><span>평가기간</span><b>12주</b></div><div class="district-stat"><span>현재 상태</span><b class="warnText">모니터링 필요</b></div></div>
-  <div class="post-purpose-grid">
-    <div class="card purpose-card"><div class="card-title">공식 사후평가 목적</div><div class="purpose-list"><div><b>✓</b><span><strong>소비자 불편 확인</strong><br>폐점 이후 고객의 불편·피해가 실제로 발생하거나 지속되는지 확인</span></div><div><b>✓</b><span><strong>대체수단 적정성 재평가</strong><br>기존에 마련한 대체점포·공동점포 등 대체수단이 충분한지 재확인</span></div><div><b>✓</b><span><strong>필요 시 보완</strong><br>문제가 지속되면 대체수단 추가·재지정 등 후속조치 검토</span></div></div><div class="official-note">※ 아래 세부 KPI는 공식 배점표가 아니라 위 목적을 운영상 확인하기 위한 BranchFit 모니터링 지표입니다.</div></div>
-    <div class="card monitor-card"><div class="card-title">BranchFit 모니터링 지표</div><div class="monitor-grid"><div><b>민원 증감</b><small>VOC·민원 건수 및 주요 불편유형 변화</small></div><div><b>대체점포 방문량</b><small>폐점 고객 유입으로 인한 이용량·혼잡 변화</small></div><div><b>평균 대기시간</b><small>통합·대체점포 창구 대기시간 변화</small></div><div><b>대체수단 이용률</b><small>공동점포·이동점포·ATM/STM 실제 이용수준</small></div><div><b>접근거리 변화</b><small>폐점 전후 고객의 대면 금융 접근거리 변화</small></div><div><b>서비스 공백</b><small>기존 점포 업무 중 대체채널에서 제공되지 않는 업무</small></div></div></div>
-  </div>
-  <div class="kpis">
-    <div class="card kpi"><span>대체점포 방문량</span><strong>+38%</strong><small>3,100 → 4,280건</small></div>
-    <div class="card kpi"><span>평균 대기시간</span><strong>+7분</strong><small>8분 → 15분</small></div>
-    <div class="card kpi"><span>월 민원/VOC</span><strong>34건</strong><small>기존 12건</small></div>
-    <div class="card kpi"><span>공동점포 이용률</span><strong class="greenText">61%</strong><small>정상 운영 중</small></div>
-  </div>
+  <div class="card pad monitoring-panel"><div class="card-title">모니터링 지표</div><div class="monitoring-grid"><div><b>민원 증감</b><small>VOC·민원 건수 및 주요 불편유형 변화</small></div><div><b>대체점포 방문량</b><small>통합·대체점포의 방문량 및 혼잡 변화</small></div><div><b>평균 대기시간</b><small>창구 평균 대기시간 변화</small></div><div><b>대체수단 이용률</b><small>공동점포·이동점포·ATM/STM 실제 이용수준</small></div><div><b>접근거리 변화</b><small>폐점 전후 고객의 대면 금융 접근거리 변화</small></div><div><b>서비스 공백</b><small>기존 업무 중 대체채널에서 제공되지 않는 업무</small></div></div></div>
+  <div class="kpis"><div class="card kpi"><span>대체점포 방문량</span><strong>+38%</strong><small>3,100 → 4,280건</small></div><div class="card kpi"><span>평균 대기시간</span><strong>+7분</strong><small>8분 → 15분</small></div><div class="card kpi"><span>월 민원/VOC</span><strong>34건</strong><small>기존 12건</small></div><div class="card kpi"><span>공동점포 이용률</span><strong class="greenText">61%</strong><small>정상 운영 중</small></div></div>
   <div class="post-summary">
     <div class="card pad"><div class="card-title">폐점 전·후 비교</div><div class="tablewrap compare-table"><table><thead><tr><th>지표</th><th>폐점 전</th><th>폐점 후</th><th>변화</th></tr></thead><tbody><tr><td>대체점포 월 방문량</td><td>3,100건</td><td>4,280건</td><td class="delta-up">+38%</td></tr><tr><td>평균 대기시간</td><td>8분</td><td>15분</td><td class="delta-up">+7분</td></tr><tr><td>월 민원/VOC</td><td>12건</td><td>34건</td><td class="delta-up">+183%</td></tr><tr><td>평균 접근거리</td><td>0.6km</td><td>2.8km</td><td class="delta-up">+2.2km</td></tr><tr><td>대체수단 운영상태</td><td>-</td><td>공동점포 정상</td><td class="delta-ok">운영</td></tr></tbody></table></div></div>
-    <div class="card pad"><div class="card-title">서비스 공백 확인</div><div class="service-gap"><div><b>입출금·송금</b><span>공동점포</span><span class="delta-ok">대체 가능</span></div><div><b>예적금 상담</b><span>공동점포</span><span class="delta-ok">대체 가능</span></div><div><b>기업대출 상담</b><span>대체채널 없음</span><span class="delta-up">공백 확인</span></div><div><b>디지털 이용 지원</b><span>지원인력 확인</span><span class="warnText">추가 확인</span></div></div><div class="callout mt"><b>현재 사후영향 상태: 모니터링 필요</b><br>방문량·대기시간·민원이 함께 증가했고, 기업대출 상담 업무의 서비스 공백이 확인됩니다.</div></div>
+    <div class="card pad"><div class="card-title">서비스 공백 확인</div><div class="service-gap"><div><b>입출금·송금</b><span>공동점포</span><span class="delta-ok">대체 가능</span></div><div><b>예적금 상담</b><span>공동점포</span><span class="delta-ok">대체 가능</span></div><div><b>기업대출 상담</b><span>대체채널 없음</span><span class="delta-up">공백 확인</span></div><div><b>디지털 이용 지원</b><span>지원인력 확인</span><span class="warnText">추가 확인</span></div></div><div class="callout mt"><b>현재 상태: 모니터링 필요</b><br>방문량·대기시간·민원이 함께 증가했고 기업대출 상담 업무의 서비스 공백이 확인됩니다.</div></div>
   </div>
-  <div class="grid two mt"><div class="card pad"><div class="card-title">12주 운영 추이</div><div class="bar-chart" id="postChart"></div></div><div class="card pad"><div class="card-title">사후평가 체크리스트</div><div class="checklist"><div>✓ 소비자 불편/VOC 확인 <span>확인</span></div><div>✓ 대체수단 정상 운영 여부 <span>확인</span></div><div>! 대체점포 혼잡 증가 <span class="warnText">모니터링</span></div><div>! 접근거리 증가 <span class="warnText">모니터링</span></div><div>! 서비스 공백 발생 <span class="warnText">조치 검토</span></div></div></div></div>
+  <div class="grid two mt"><div class="card pad"><div class="card-title">12주 운영 추이</div><div class="bar-chart" id="postChart"></div></div><div class="card pad"><div class="card-title">모니터링 체크리스트</div><div class="checklist"><div>✓ 소비자 불편/VOC 확인 <span>확인</span></div><div>✓ 대체수단 정상 운영 여부 <span>확인</span></div><div>! 대체점포 혼잡 증가 <span class="warnText">모니터링</span></div><div>! 접근거리 증가 <span class="warnText">모니터링</span></div><div>! 서비스 공백 발생 <span class="warnText">조치 검토</span></div></div></div></div>
   <div class="card pad mt"><div class="card-title">AI 사후영향 분석 <button class="btn primary" id="postAiBtn">AI 분석</button></div><div class="ai-summary muted" id="postAiSummary">현재 운영지표와 고객 불편 데이터를 종합해 추가 검토사항을 생성합니다.</div></div>
 </section>
 
 <section class="view" id="data">
-  <div class="pagehead"><div><h1>데이터 정의 및 관리</h1><p>외부·내부 데이터를 업로드하고, AI 컬럼 매핑 → ETL 검증 → PostgreSQL 적재까지 관리합니다.</p></div><span class="tag blue">Data Pipeline</span></div>
-  <div class="freshness-strip"><b>데이터 최신성</b><span>점포정보 <strong>2025-12-31</strong></span><span>인구통계 <strong>2026-07-31 · 데모</strong></span><span>방문·대면 데이터 <strong>2026-08-31 · 데모</strong></span><span>설문/VOC <strong>2026-09-09 · 데모</strong></span></div>
+  <div class="pagehead"><div><h1>데이터 관리</h1><p>외부·내부 데이터를 업로드하고 표준 스키마로 변환·검증·저장합니다.</p></div></div>
+  <div class="freshness-strip"><b>데이터 기준일</b><span>점포/좌표 <strong>2026-09-08</strong></span><span>인구·65세 이상 <strong>2026-07-31</strong></span><span>사업체 <strong>2024-12-31</strong></span><span>점포 방문·이용빈도 <strong>2026-08 · 데모</strong></span><span>대면서비스 의존도 <strong>2026-08 · 데모</strong></span><span>고객 설문/VOC <strong>2026-09-09 · 데모</strong></span></div>
   <div class="pipeline"><div>CSV / Excel / JSON / API</div><b>→</b><div>AI 컬럼 매핑</div><b>→</b><div>Python ETL</div><b>→</b><div>검증</div><b>→</b><div>PostgreSQL</div></div>
-  <div class="grid two">
-    <div class="card pad"><div class="card-title">내부 데이터 업로드</div><div class="upload" id="uploadBox"><b>파일을 선택해 업로드</b><span>CSV · XLSX · JSON</span><input type="file" id="dataFile" accept=".csv,.xlsx,.json" /></div><div id="mappingPreview" class="mapping"></div></div>
-    <div class="card pad"><div class="card-title">데이터셋 상태</div><div id="datasetList" class="dataset-list"></div></div>
-  </div>
-  <div class="card pad mt"><div class="card-title">분석 결과 저장 구조</div><div class="storage-architecture"><div class="storage-box"><b>원천 데이터</b><small>branch<br>population_stats<br>branch_visit_stats<br>customer_opinion</small></div><div class="storage-arrow">→</div><div class="storage-box"><b>analysis_case</b><small>점포 하나의 통·폐합 검토 건을 하나의 Case로 관리<br>case_id · branch_id · current_stage · status</small></div><div class="storage-arrow">→</div><div class="storage-box"><b>단계별 분석 이력</b><small>status_analysis · candidate_analysis · impact_assessment · ai_analysis · survey · post_assessment</small></div></div><div class="official-note">각 분석 시점의 데이터 기준일·데이터 버전·규정 버전·AI 결과를 함께 저장해 과거 의사결정 근거를 재현할 수 있도록 설계합니다.</div></div>
+  <div class="grid two"><div class="card pad"><div class="card-title">내부 데이터 업로드</div><div class="upload" id="uploadBox"><b>파일을 선택해 업로드</b><span>CSV · XLSX · JSON</span><input type="file" id="dataFile" accept=".csv,.xlsx,.json" /></div><div id="mappingPreview" class="mapping"></div></div><div class="card pad"><div class="card-title">데이터셋 상태</div><div id="datasetList" class="dataset-list"></div></div></div>
+  <div class="card pad mt"><div class="card-title">분석 결과 저장 구조</div><div class="storage-architecture"><div class="storage-box"><b>원천 데이터</b><small>branch<br>population_stats<br>branch_visit_stats<br>customer_opinion</small></div><div class="storage-arrow">→</div><div class="storage-box"><b>analysis_case</b><small>점포 하나의 통·폐합 검토 건을 하나의 Case로 관리<br>case_id · branch_id · current_stage · status</small></div><div class="storage-arrow">→</div><div class="storage-box"><b>단계별 분석 이력</b><small>status_analysis · candidate_analysis · impact_assessment · ai_analysis · survey · post_assessment</small></div></div><div class="official-note">분석 시점의 데이터 기준일·버전·AI 결과를 함께 저장해 과거 의사결정 근거를 재현할 수 있도록 설계합니다.</div></div>
   <div class="card pad mt"><div class="card-title">최근 저장된 분석 Case</div><div class="tablewrap history-table"><table><thead><tr><th>Case</th><th>현재 단계</th><th>영향도</th><th>상태</th><th>업데이트</th></tr></thead><tbody id="caseHistoryRows"></tbody></table></div></div>
   <div class="card pad mt"><div class="card-title">BranchFit 표준 스키마</div><div class="schema-grid"><div><b>branch</b><code>branch_id · bank_code · branch_name · latitude · longitude · area_code</code></div><div><b>population_stats</b><code>area_code · total_population · age_65_plus · elderly_ratio · reference_date</code></div><div><b>branch_visit_stats</b><code>branch_id · year_month · visit_count · unique_customer_count</code></div><div><b>customer_opinion</b><code>survey_id · branch_id · inconvenience_level · preferred_alternative · comment</code></div><div><b>analysis_case</b><code>case_id · branch_id · current_stage · status · data_snapshot_at · created_at · updated_at</code></div><div><b>post_assessment</b><code>case_id · complaints · alternative_visits · waiting_time · access_distance · service_gap</code></div></div></div>
 </section>
@@ -173,7 +143,7 @@
 </div>
 <div class="toast" id="toast"></div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-<script src="app.js?v=20260909-2"></script>
-<script src="enhancements.js?v=20260909-2"></script>
+<script src="app.js?v=20260909-4"></script>
+<script src="enhancements.js?v=20260909-4"></script>
 </body>
 </html>
